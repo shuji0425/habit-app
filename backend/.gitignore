@@ -1,0 +1,18 @@
+# Go binary output
+/bin
+/obj
+
+# Dependency directories
+/vendor
+
+# IDE/editor settings
+.idea/
+.vscode/
+
+# Go test and coverage files
+*.test
+*.out
+*.coverage
+
+# Air (Goのホットリロード)
+.air

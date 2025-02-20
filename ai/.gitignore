@@ -1,0 +1,19 @@
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Python virtual environment
+venv/
+env/
+
+# IDE/editor settings
+.idea/
+.vscode/
+
+# Log files
+*.log
+
+# Uvicorn PID file
+*.pid

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend-go
+    image: backend-go
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    depends_on:
+      db: 
+        condition: service_healthy
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    volumes:
+      - ./backend:/app/backend
+    command: air
+
+  frontend:
+    build: ./mobile
+    container_name: frontend-react
+    image: frontend-react
+    ports:
+      - "19000:19000"  # Expo Go 用
+      - "19001:19001"  # Metro Bundler
+      - "19002:19002"  # Metro Debugger
+    volumes:
+      - ./mobile:/app/mobile
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=${EXPO_DEVTOOLS_LISTEN_ADDRESS}
+    stdin_open: true
+    tty: true
+
+  ai:
+    build: ./ai
+    container_name: ai-python
+    image: ai-python
+    ports:
+      - "${AI_PORT}:${AI_PORT}"
+    volumes:
+      - ./ai:/app/ai
+    command: uvicorn main:app --host ${EXPO_DEVTOOLS_LISTEN_ADDRESS} --port ${AI_PORT} --reload
+
+  db:
+    image: postgres:15
+    container_name: db-posgres
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  db_data:

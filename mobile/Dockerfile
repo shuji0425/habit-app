@@ -12,4 +12,4 @@ RUN npm install
 COPY . .
 
 # 開発サーバーを起動
-CMD ["npm", "start"]
+CMD ["npx", "expo", "start"]

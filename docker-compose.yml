@@ -31,6 +31,7 @@ services:
       - "19002:19002"  # Metro Debugger
     volumes:
       - ./mobile:/app/mobile
+      - /app/mobile/node_modules
     environment:
       - EXPO_DEVTOOLS_LISTEN_ADDRESS=${EXPO_DEVTOOLS_LISTEN_ADDRESS}
       - REACT_NATIVE_PACKAGER_HOSTNAME=${LOCAL_IP_ADDRESS}

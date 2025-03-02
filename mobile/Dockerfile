@@ -2,7 +2,7 @@
 FROM node:20
 
 # 作業ディレクトリ
-WORKDIR /app/frontend
+WORKDIR /app/mobile
 
 # 依存関係をインストール
 COPY package.json package-lock.json ./
